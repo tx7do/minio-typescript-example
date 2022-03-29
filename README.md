@@ -1,0 +1,1 @@
+# minio-typescript-example
