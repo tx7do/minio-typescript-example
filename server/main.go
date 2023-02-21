@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/astaxie/beego/validation"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/minio/minio-go/v7"
@@ -38,24 +37,6 @@ func ResponseJSON(c *gin.Context, httpCode, errCode int, msg string, data interf
 		Data: data,
 	})
 	return
-}
-
-func BindAndValid(c *gin.Context, form interface{}) (int, int) {
-	err := c.Bind(form)
-	if err != nil {
-		return http.StatusBadRequest, 400
-	}
-
-	valid := validation.Validation{}
-	check, err := valid.Valid(form)
-	if err != nil {
-		return http.StatusInternalServerError, 500
-	}
-	if !check {
-		return http.StatusBadRequest, 400
-	}
-
-	return http.StatusOK, 200
 }
 
 func handleGetPresignedUrl(c *gin.Context) {
