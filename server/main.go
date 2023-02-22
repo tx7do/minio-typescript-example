@@ -1,6 +1,8 @@
 package main
 
+import "main/http"
+
 func main() {
-	srv := NewHttpServer()
+	srv := http.NewHttpServer()
 	srv.Run()
 }

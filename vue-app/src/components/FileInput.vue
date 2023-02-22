@@ -1,11 +1,14 @@
 <template>
-  <form ref="formRef" @submit="onSubmit">
-    <label>
-      选择上传文件:
-      <input type="file" id="file" ref="inputRef"/>
-    </label>
-    <button type="submit">上传</button>
-  </form>
+    <form ref="formRef" @submit="onSubmit">
+      <label>
+        {{ props.title }}:
+      </label>
+      <label>
+        选择上传文件:
+        <input type="file" id="file" ref="inputRef"/>
+      </label>
+      <button type="submit">上传</button>
+    </form>
 </template>
 
 <script lang="ts" setup>
@@ -15,6 +18,13 @@ const inputRef = ref<HTMLInputElement | null>(null);
 const formRef = ref<HTMLFormElement | null>(null);
 
 const emit = defineEmits(['click-upload']);
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: '',
+  }
+});
 
 function onSubmit(e: Event) {
   e.preventDefault();

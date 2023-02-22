@@ -2,6 +2,7 @@ import * as React from "react";
 
 export type FileInputProps = {
     onUploadFile?: (file?: File) => void;
+    title?: string;
 }
 
 class FileInput extends React.Component<FileInputProps> {
@@ -34,6 +35,9 @@ class FileInput extends React.Component<FileInputProps> {
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
+                <label>
+                    {this.props.title}:&nbsp;&nbsp;&nbsp;
+                </label>
                 <label>
                     选择上传文件:
                     <input type="file" ref={this.fileInput}/>

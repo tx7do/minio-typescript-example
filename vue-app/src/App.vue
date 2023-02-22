@@ -1,93 +1,18 @@
 <template>
-  <FileInput @click-upload="onXhrUploadFile"/>
-  <FileInput @click-upload="onFetchUploadFile"/>
-  <FileInput @click-upload="onAxiosUploadFile"/>
+  <FileInput title="XHR&nbsp;&nbsp;&nbsp;PUT" @click-upload="xhrPutFile"/>
+  <FileInput title="Fetch PUT" @click-upload="fetchPutFile"/>
+  <FileInput title="Axios PUT" @click-upload="axiosPutFile"/>
+  <br/>
+  <br/>
+  <FileInput title="XHR&nbsp;&nbsp;&nbsp;POST" @click-upload="xhrPostFile"/>
+  <FileInput title="Fetch POST" @click-upload="fetchPostFile"/>
+  <FileInput title="Axios POST" @click-upload="axiosPostFile"/>
 </template>
 
 <script lang="ts" setup>
-import FileInput from './components/FileInput.vue';
-import axios from 'axios';
-
-function retrieveNewURL(file: File, cb: (file: File, url: string) => void) {
-  const url = `http://localhost:8080/presignedUrl/${file.name}`;
-  axios.get(url)
-    .then(function (response) {
-      cb(file, response.data.data.url);
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
-}
-
-function xhrUploadFile(file: File, url: string) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('PUT', url, true);
-  xhr.send(file);
-
-  xhr.onload = () => {
-    if (xhr.status === 200) {
-      console.log(`${file.name} 上传成功`);
-    } else {
-      console.error(`${file.name} 上传失败`);
-    }
-  };
-}
-
-function fetchUploadFile(file: File, url: string) {
-  fetch(url, {
-    method: 'PUT',
-    body: file,
-  })
-    .then((response) => {
-      console.log(`${file.name} 上传成功`, response);
-    })
-    .catch((error) => {
-      console.error(`${file.name} 上传失败`, error);
-    });
-}
-
-function axiosUploadFile(file: File, url: string) {
-  axios
-    .put(url, file, {
-      headers: {
-        'Content-Type': file.type,
-      },
-    })
-    .then(function (response) {
-      console.log(`${file.name} 上传成功`, response);
-    })
-    .catch(function (error) {
-      console.error(`${file.name} 上传失败`, error);
-    });
-}
-
-function onXhrUploadFile(file?: File) {
-  console.log('onXhrUploadFile', file);
-  if (file) {
-    retrieveNewURL(file, (file, url) => {
-      xhrUploadFile(file, url);
-    });
-  }
-}
-
-function onFetchUploadFile(file?: File) {
-  console.log('onFetchUploadFile', file);
-  if (file) {
-    retrieveNewURL(file, (file, url) => {
-      fetchUploadFile(file, url);
-    });
-  }
-}
-
-function onAxiosUploadFile(file?: File) {
-  console.log('onAxiosUploadFile', file);
-  if (file) {
-    retrieveNewURL(file, (file, url) => {
-      axiosUploadFile(file, url);
-    });
-  }
-}
-
+import FileInput from '@/components/FileInput.vue';
+import { xhrPutFile, fetchPutFile, axiosPutFile } from '@/util/put_upload';
+import { xhrPostFile, fetchPostFile, axiosPostFile } from '@/util/post_upload';
 </script>
 
 <style lang="less">
