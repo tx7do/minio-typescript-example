@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -67,4 +69,14 @@ func TestGetPresignedUrl(t *testing.T) {
 	assert.Nil(t, err)
 
 	log.Println(presignedURL)
+}
+
+func TestGetIp(t *testing.T) {
+	host, _ := os.Hostname()
+	addrs, _ := net.LookupHost(host)
+	for _, addr := range addrs {
+		fmt.Println(addr)
+	}
+
+	fmt.Println("GetInternalIP:", GetInternalIP())
 }

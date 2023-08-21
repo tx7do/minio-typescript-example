@@ -2,8 +2,11 @@ package minio
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"net"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/minio/minio-go/v7"
@@ -81,7 +84,10 @@ func (c *Client) PostPresignedUrl(ctx context.Context, bucketName, objectName st
 		return "", map[string]string{}, err
 	}
 
-	return presignedURL.String(), formData, nil
+	uploadUrl := presignedURL.String()
+	uploadUrl = strings.Replace(uploadUrl, endpoint, getUploadHost(), -1)
+
+	return uploadUrl, formData, nil
 }
 
 func (c *Client) PutPresignedUrl(ctx context.Context, bucketName, objectName string) (string, error) {
@@ -93,5 +99,26 @@ func (c *Client) PutPresignedUrl(ctx context.Context, bucketName, objectName str
 		return "", err
 	}
 
-	return presignedURL.String(), nil
+	uploadUrl := presignedURL.String()
+	uploadUrl = strings.Replace(uploadUrl, endpoint, getUploadHost(), -1)
+
+	return uploadUrl, nil
+}
+
+func GetInternalIP() string {
+	// 思路来自于Python版本的内网IP获取，其他版本不准确
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		return ""
+	}
+	defer conn.Close()
+
+	// udp 面向无连接，所以这些东西只在你本地捣鼓
+	res := conn.LocalAddr().String()
+	res = strings.Split(res, ":")[0]
+	return res
+}
+
+func getUploadHost() string {
+	return fmt.Sprintf("%s:9000", GetInternalIP())
 }
