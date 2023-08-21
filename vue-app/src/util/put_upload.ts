@@ -8,7 +8,7 @@ export class PutFile {
 
     xhr.onload = () => {
       if (xhr.status === 200 || xhr.status === 204) {
-        console.log(`[${xhr.status}] ${file.name} 上传成功`);
+        console.info(`[${xhr.status}] ${file.name} 上传成功`);
       } else {
         console.error(`[${xhr.status}] ${file.name} 上传失败`);
       }
@@ -21,10 +21,14 @@ export class PutFile {
       body: file,
     })
       .then((response) => {
-        console.log(`${file.name} 上传成功`, response);
+        if (response.status === 204 || response.status === 204) {
+          console.info(`${file.name} 上传成功`, response);
+        } else {
+          console.error(`${file.name} 上传失败`, response);
+        }
       })
       .catch((error) => {
-        console.error(`${file.name} 上传失败`, error);
+        console.error(`${file.name} 上传异常`, error);
       });
   }
 
@@ -36,10 +40,14 @@ export class PutFile {
         },
       })
       .then(function (response) {
-        console.log(`${file.name} 上传成功`, response);
+        if (response.status === 204 || response.status === 204) {
+          console.info(`${file.name} 上传成功`, response);
+        } else {
+          console.error(`${file.name} 上传失败`, response);
+        }
       })
       .catch(function (error) {
-        console.error(`${file.name} 上传失败`, error);
+        console.error(`${file.name} 上传异常`, error);
       });
   }
 }
@@ -56,7 +64,7 @@ export function retrievePutUrl(file: File, cb: (file: File, url: string) => void
 }
 
 export function xhrPutFile(file?: File) {
-  console.log('XhrPutFile', file);
+  console.log('Xhr.PutFile', file);
   if (file) {
     retrievePutUrl(file, (file, url) => {
       PutFile.xhr(file, url);
@@ -65,7 +73,7 @@ export function xhrPutFile(file?: File) {
 }
 
 export function fetchPutFile(file?: File) {
-  console.log('FetchPutFile', file);
+  console.log('Fetch.PutFile', file);
   if (file) {
     retrievePutUrl(file, (file, url) => {
       PutFile.fetch(file, url);
@@ -74,7 +82,7 @@ export function fetchPutFile(file?: File) {
 }
 
 export function axiosPutFile(file?: File) {
-  console.log('AxiosPutFile', file);
+  console.log('Axios.PutFile', file);
   if (file) {
     retrievePutUrl(file, (file, url) => {
       PutFile.axios(file, url);
