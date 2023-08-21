@@ -33,7 +33,7 @@ func TestMinioPostPresignedUrl(t *testing.T) {
 	cli := NewMinioClient()
 	assert.NotNil(t, cli)
 
-	presignedURL, formData, err := cli.PostPresignedUrl(context.Background(), "images", "test.jpg")
+	presignedURL, formData, err := cli.PostPresignedUrl(context.Background(), "images", "test.jpg", "image/jpg")
 	assert.Nil(t, err)
 
 	log.Println(presignedURL, formData)
@@ -46,16 +46,6 @@ func TestMinioPutPresignedUrl(t *testing.T) {
 	assert.NotNil(t, cli)
 
 	presignedURL, err := cli.PutPresignedUrl(context.Background(), "images", "test.jpg")
-	assert.Nil(t, err)
-
-	log.Println(presignedURL)
-}
-
-func TestHeadPresignedUrl(t *testing.T) {
-	cli := NewMinioClient()
-	assert.NotNil(t, cli)
-
-	presignedURL, err := cli.HeadPresignedUrl(context.Background(), "images", "test.jpg")
 	assert.Nil(t, err)
 
 	log.Println(presignedURL)

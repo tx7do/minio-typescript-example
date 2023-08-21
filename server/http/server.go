@@ -73,7 +73,7 @@ func (s *Server) handlePutPresignedUrl(c *gin.Context) {
 func (s *Server) handlePostPresignedUrl(c *gin.Context) {
 	fileName := c.Param("filename")
 
-	presignedURL, formData, err := s.minioClient.PostPresignedUrl(context.Background(), "images", fileName)
+	presignedURL, formData, err := s.minioClient.PostPresignedUrl(context.Background(), "images", fileName, "image/png")
 	if err != nil {
 		c.String(500, "get presigned url failed")
 		return

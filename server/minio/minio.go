@@ -18,7 +18,7 @@ const (
 
 	endpoint        string = "localhost:9000"
 	accessKeyID     string = "root"
-	secretAccessKey string = "123456789"
+	secretAccessKey string = "123456"
 	useSSL          bool   = false
 )
 
@@ -55,28 +55,14 @@ func (c *Client) GetPresignedUrl(ctx context.Context, bucketName, objectName str
 	return presignedURL.String(), nil
 }
 
-func (c *Client) HeadPresignedUrl(ctx context.Context, bucketName, objectName string) (string, error) {
-	expiry := defaultExpiryTime
-
-	reqParams := make(url.Values)
-	reqParams.Set("response-content-disposition", "attachment; filename=\"your-filename.txt\"")
-
-	presignedURL, err := c.cli.PresignedHeadObject(ctx, bucketName, objectName, expiry, reqParams)
-	if err != nil {
-		log.Fatalln(err)
-		return "", err
-	}
-
-	return presignedURL.String(), nil
-}
-
-func (c *Client) PostPresignedUrl(ctx context.Context, bucketName, objectName string) (string, map[string]string, error) {
+func (c *Client) PostPresignedUrl(ctx context.Context, bucketName, objectName, contentType string) (string, map[string]string, error) {
 	expiry := defaultExpiryTime
 
 	policy := minio.NewPostPolicy()
 	_ = policy.SetBucket(bucketName)
 	_ = policy.SetKey(objectName)
 	_ = policy.SetExpires(time.Now().UTC().Add(expiry))
+	_ = policy.SetContentType(contentType)
 
 	presignedURL, formData, err := c.cli.PresignedPostPolicy(ctx, policy)
 	if err != nil {
@@ -85,7 +71,14 @@ func (c *Client) PostPresignedUrl(ctx context.Context, bucketName, objectName st
 	}
 
 	uploadUrl := presignedURL.String()
-	uploadUrl = strings.Replace(uploadUrl, endpoint, getUploadHost(), -1)
+	//uploadUrl = strings.Replace(uploadUrl, endpoint, getUploadHost(), -1)
+
+	fmt.Printf("curl ")
+	for k, v := range formData {
+		fmt.Printf("-F %s=%s ", k, v)
+	}
+	fmt.Printf("-F file=%s ", objectName)
+	fmt.Printf("%s\n", uploadUrl)
 
 	return uploadUrl, formData, nil
 }
@@ -100,7 +93,7 @@ func (c *Client) PutPresignedUrl(ctx context.Context, bucketName, objectName str
 	}
 
 	uploadUrl := presignedURL.String()
-	uploadUrl = strings.Replace(uploadUrl, endpoint, getUploadHost(), -1)
+	//uploadUrl = strings.Replace(uploadUrl, endpoint, getUploadHost(), -1)
 
 	return uploadUrl, nil
 }
@@ -120,5 +113,6 @@ func GetInternalIP() string {
 }
 
 func getUploadHost() string {
+	//return "localhost:9000"
 	return fmt.Sprintf("%s:9000", GetInternalIP())
 }
