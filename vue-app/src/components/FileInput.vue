@@ -1,14 +1,14 @@
 <template>
-    <form ref="formRef" @submit="onSubmit">
-      <label>
-        {{ props.title }}:
-      </label>
-      <label>
-        选择上传文件:
-        <input type="file" id="file" ref="inputRef"/>
-      </label>
-      <button type="submit">上传</button>
-    </form>
+  <form ref="formRef" @submit="onSubmit">
+    <label>
+      {{ props.title }}:
+    </label>
+    <label>
+      Select upload file:
+      <input type="file" id="file" ref="inputRef"/>
+    </label>
+    <button type="submit">Upload</button>
+  </form>
 </template>
 
 <script lang="ts" setup>

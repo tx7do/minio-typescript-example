@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_URL } from '@/util/const';
 
 export class PostFile {
   static xhr(file: File, url: string, data: object) {
@@ -15,9 +16,9 @@ export class PostFile {
 
     xhr.onload = () => {
       if (xhr.status === 200 || xhr.status === 204) {
-        console.info(`[${xhr.status}] ${file.name} 上传成功`);
+        console.info(`[${xhr.status}] ${file.name} upload success!`);
       } else {
-        console.error(`[${xhr.status}] ${file.name} 上传失败`);
+        console.error(`[${xhr.status}] ${file.name} upload failed!`);
       }
     };
   }
@@ -36,13 +37,13 @@ export class PostFile {
     })
       .then((response) => {
         if (response.status === 204 || response.status === 204) {
-          console.info(`${file.name} 上传成功`, response);
+          console.info(`${file.name} upload success!`, response);
         } else {
-          console.error(`${file.name} 上传失败`, response);
+          console.error(`${file.name} upload failed!`, response);
         }
       })
       .catch((error) => {
-        console.error(`${file.name} 上传异常`, error);
+        console.error(`${file.name} upload exception!`, error);
       });
   }
 
@@ -60,19 +61,19 @@ export class PostFile {
     )
       .then(function (response) {
         if (response.status === 204 || response.status === 204) {
-          console.info(`${file.name} 上传成功`, response);
+          console.info(`${file.name} upload success!`, response);
         } else {
-          console.error(`${file.name} 上传失败`, response);
+          console.error(`${file.name} upload failed!`, response);
         }
       })
       .catch(function (error) {
-        console.error(`${file.name} 上传异常`, error);
+        console.error(`${file.name} upload exception!`, error);
       });
   }
 }
 
 export function retrievePostUrl(file: File, cb: (file: File, url: string, data: object) => void) {
-  const url = `http://localhost:8080/presignedPostUrl/${file.name}`;
+  const url = `${API_URL}/presignedPostUrl/${file.name}`;
   axios.get(url)
     .then(function (response) {
       cb(file, response.data.data.url, response.data.data.formData);

@@ -16,6 +16,7 @@ class FileInput extends React.Component<FileInputProps> {
 
     componentDidMount() {
     }
+
     componentWillUnmount() {
     }
 
@@ -39,10 +40,10 @@ class FileInput extends React.Component<FileInputProps> {
                     {this.props.title}:&nbsp;&nbsp;&nbsp;
                 </label>
                 <label>
-                    选择上传文件:
+                    Select upload file:
                     <input type="file" ref={this.fileInput}/>
                 </label>
-                <button type="submit">上传</button>
+                <button type="submit">Upload</button>
             </form>
         );
     }

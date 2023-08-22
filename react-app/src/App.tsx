@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import FileInput from "./components/FileInput";
-import { xhrPutFile, fetchPutFile, axiosPutFile } from './util/put_upload';
-import { xhrPostFile, fetchPostFile, axiosPostFile } from './util/post_upload';
+import {xhrPutFile, fetchPutFile, axiosPutFile} from './util/put_upload';
+import {xhrPostFile, fetchPostFile, axiosPostFile} from './util/post_upload';
 
 class App extends React.Component {
     render() {
