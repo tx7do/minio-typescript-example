@@ -22,7 +22,7 @@ export class PutFile {
       body: file,
     })
       .then((response) => {
-        if (response.status === 204 || response.status === 204) {
+        if (response.status === 200 || response.status === 204) {
           console.info(`${file.name} upload success!`, response);
         } else {
           console.error(`${file.name} upload failed!`, response);
@@ -41,7 +41,7 @@ export class PutFile {
         },
       })
       .then(function (response) {
-        if (response.status === 204 || response.status === 204) {
+        if (response.status === 200 || response.status === 204) {
           console.info(`${file.name} upload success!`, response);
         } else {
           console.error(`${file.name} upload failed!`, response);

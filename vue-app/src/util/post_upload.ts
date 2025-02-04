@@ -1,14 +1,10 @@
 import axios from 'axios';
 import { API_URL } from '@/util/const';
+import { makeFormData } from '@/util/utils';
 
 export class PostFile {
   static xhr(file: File, url: string, data: object) {
-    const formData = new FormData();
-    Object.entries(data)
-      .forEach(([k, v]) => {
-        formData.append(k, v);
-      });
-    formData.append('file', file);
+    const formData = makeFormData(file, data);
 
     const xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
@@ -24,19 +20,14 @@ export class PostFile {
   }
 
   static fetch(file: File, url: string, data: object) {
-    const formData = new FormData();
-    Object.entries(data)
-      .forEach(([k, v]) => {
-        formData.append(k, v);
-      });
-    formData.append('file', file);
+    const formData = makeFormData(file, data);
 
     fetch(url, {
       method: 'POST',
       body: formData,
     })
       .then((response) => {
-        if (response.status === 204 || response.status === 204) {
+        if (response.status === 200 || response.status === 204) {
           console.info(`${file.name} upload success!`, response);
         } else {
           console.error(`${file.name} upload failed!`, response);
@@ -48,19 +39,14 @@ export class PostFile {
   }
 
   static axios(file: File, url: string, data: object) {
-    const formData = new FormData();
-    Object.entries(data)
-      .forEach(([k, v]) => {
-        formData.append(k, v);
-      });
-    formData.append('file', file);
+    const formData = makeFormData(file, data);
 
     axios.post(
       url,
       formData
     )
       .then(function (response) {
-        if (response.status === 204 || response.status === 204) {
+        if (response.status === 200 || response.status === 204) {
           console.info(`${file.name} upload success!`, response);
         } else {
           console.error(`${file.name} upload failed!`, response);
